@@ -1,35 +1,26 @@
+import {useState} from "react";
+import {useAppDispatch, useAppSelector} from "../app/hooks.ts";
+import {getWeather} from "../features/weather/weatherSlice.ts";
 import Form from "./Form.tsx";
 import Weather from "./Weather.tsx";
-import {useState} from "react";
-import {api_key, base_url} from "../utils/constants.ts";
-import {WeatherInfo} from "../utils/types";
+
 
 const Data = () => {
-    const [weatherInfo, setWeatherInfo] = useState<Partial<WeatherInfo>>({});
-    const [message, setMessage] = useState('Enter city name');
+    const [_city, setCity] = useState('');
+    const dispatch = useAppDispatch();
+    const { data, status, error } = useAppSelector((state) => state.weather);
 
-    const getWeather = async (city: string) => {
-        try {
-            const res = await fetch(`${base_url}?q=${city}&appid=${api_key}&units=metric`);
-            const data = await res.json();
-            setWeatherInfo({
-                city: data.name,
-                country: data.sys.country,
-                temp: data.main.temp,
-                pressure: data.main.pressure,
-                sunset: data.sys.sunset
-            });
-            setMessage('');
-        } catch (e) {
-            console.log(e);
-            setMessage('Enter correct city name')
-        }
-    }
+    const handleGetWeather = (city: string) => {
+        setCity(city);
+        dispatch(getWeather(city));
+    };
 
     return (
         <div>
-            <Form getWeather={getWeather}/>
-            <Weather weather={weatherInfo} message={message}/>
+            <Form onSubmit={handleGetWeather} />
+            {status === 'loading' && <p>Loading...</p>}
+            {status === 'failed' && <p>{error}</p>}
+            {status === 'succeeded' && <Weather weather={data} />}
         </div>
     );
 };
