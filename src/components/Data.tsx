@@ -2,12 +2,13 @@ import Form from "./Form.tsx";
 import Weather from "./Weather.tsx";
 import {useState} from "react";
 import {api_key, base_url} from "../utils/constants.ts";
+import {WeatherData} from "../utils/types";
 
 const Data = () => {
-    const [weatherInfo, setWeatherInfo] = useState({});
+    const [weatherInfo, setWeatherInfo] = useState<Partial<WeatherData>>({});
     const [message, setMessage] = useState('Enter city name');
 
-    const getWeather = (city: string) => {
+    const getWeather =  (city: string) => {
         fetch(`${base_url}?q=${city}&appid=${api_key}&units=metric`)
             .then(res => res.json())
             .then(data => {

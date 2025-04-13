@@ -1,10 +1,12 @@
+import {FormEvent} from "react";
+
 type Props = {
     getWeather: (city: string) => void,
 }
 
 const Form = ({getWeather}: Props) => {
 
-    const handleGetWeather = e => {
+    const handleGetWeather = (e: FormEvent<HTMLFormElement>)  => {
         e.preventDefault();
         const city = e.currentTarget.city.value.trim();
         getWeather(city);
