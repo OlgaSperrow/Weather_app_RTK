@@ -1,4 +1,12 @@
-const Weather = ({weather, message}) => {
+import {WeatherData} from "../utils/types";
+
+type Props = {
+    weather: WeatherData;
+    message: string;
+}
+
+
+const Weather = ({weather, message}: Props) => {
     if (message) {
         return (
             <div className={'infoWeath'}>{message}</div>

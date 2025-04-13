@@ -1,4 +1,8 @@
-const Form = ({getWeather}) => {
+type Props = {
+    getWeather: (city: string) => void,
+}
+
+const Form = ({getWeather}: Props) => {
 
     const handleGetWeather = e => {
         e.preventDefault();
